@@ -41,4 +41,4 @@ target_link_libraries(${LIB})
 # Generate cgo wrapper
 get_property(LIBRARY_PATH TARGET ${LIB} PROPERTY LOCATION)
 set(INCLUDE_PATH ${PROJECT_SOURCE_DIR}/include)
-configure_file(${PROJECT_SOURCE_DIR}/go/src/bridge/bridge.go.in ${PROJECT_SOURCE_DIR}/go/src/bridge/bridge.go)
+configure_file(${PROJECT_SOURCE_DIR}/demo/src/bridge/bridge.go.in ${PROJECT_SOURCE_DIR}/demo/src/bridge/bridge.go)
