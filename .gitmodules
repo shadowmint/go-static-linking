@@ -1,0 +1,3 @@
+[submodule "deps/n"]
+	path = deps/n
+	url = doug@shadowmint.xen.prgmr.com:repo/libn.git
