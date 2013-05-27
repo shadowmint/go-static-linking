@@ -35,15 +35,22 @@ file(GLOB_RECURSE SOURCES src/*.c*)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 # Python dep
-include(ExternalProject_)
-ExternalProject_Add(libpython 
+set(PYTHON_INSTALL ${CMAKE_CURRENT_BINARY_DIR}/python)
+include(ExternalProject)
+ExternalProject_Add(
+  python_external
   SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/deps/python
-  CONFIGURE_COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/deps/python/configure --prefix=<INSTALL_DIR>
-  BUILD_COMMAND ${MAKE})
+  INSTALL_DIR ${PYTHON_INSTALL}
+  CONFIGURE_COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/deps/python/configure --prefix=${PYTHON_INSTALL}
+  BUILD_COMMAND ${MAKE}
+)
+add_library(python UNKNOWN IMPORTED)
+set_property(TARGET python PROPERTY IMPORTED_LOCATION ${PYTHON_INSTALL}/lib/xxx.a)
+add_dependencies(python python_external)
 
 # Build library
 add_library(${LIB} ${SOURCES})
-target_link_libraries(${LIB})
+target_link_libraries(${LIB} python)
 
 # Generate cgo wrapper
 get_property(LIBRARY_PATH TARGET ${LIB} PROPERTY LOCATION)
