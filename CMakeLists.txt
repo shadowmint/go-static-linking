@@ -32,7 +32,14 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
 file(GLOB_RECURSE SOURCES src/*.c*)
 
 # libary headers
-include_directories(${PROJECT_SOURCE_DIR}/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+# Python dep
+include(ExternalProject_)
+ExternalProject_Add(libpython 
+  SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/deps/python
+  CONFIGURE_COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/deps/python/configure --prefix=<INSTALL_DIR>
+  BUILD_COMMAND ${MAKE})
 
 # Build library
 add_library(${LIB} ${SOURCES})
@@ -40,5 +47,5 @@ target_link_libraries(${LIB})
 
 # Generate cgo wrapper
 get_property(LIBRARY_PATH TARGET ${LIB} PROPERTY LOCATION)
-set(INCLUDE_PATH ${PROJECT_SOURCE_DIR}/include)
-configure_file(${PROJECT_SOURCE_DIR}/demo/src/bridge/bridge.go.in ${PROJECT_SOURCE_DIR}/demo/src/bridge/bridge.go)
+set(INCLUDE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/include)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/demo/src/bridge/bridge.go.in ${CMAKE_CURRENT_SOURCE_DIR}/demo/src/bridge/bridge.go)
