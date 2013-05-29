@@ -3,12 +3,12 @@ package bridge
 import "fmt"
 
 // #cgo CFLAGS: -I${INCLUDE_PATH}
-// #cgo LDFLAGS: ${LIBRARY_PATH}
+// #cgo LDFLAGS: ${LIBRARIES}
 // #include <junk.h>
 import "C"
 
 func Run() {
   fmt.Printf("Invoking c library...\n")
-  C.x(10)
+  C.x(0)
   fmt.Printf("Done\n")
 }

@@ -33,9 +33,11 @@ file(GLOB_RECURSE SOURCES src/*.c*)
 
 # libary headers
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/python/include/python2.7)
 
 # Python dep
 set(PYTHON_INSTALL ${CMAKE_CURRENT_BINARY_DIR}/python)
+set(PYTHON_LIB ${PYTHON_INSTALL}/lib/libpython2.7.a)
 include(ExternalProject)
 ExternalProject_Add(
   python_external
@@ -45,14 +47,19 @@ ExternalProject_Add(
   BUILD_COMMAND ${MAKE}
 )
 add_library(python UNKNOWN IMPORTED)
-set_property(TARGET python PROPERTY IMPORTED_LOCATION ${PYTHON_INSTALL}/lib/xxx.a)
+set_property(TARGET python PROPERTY IMPORTED_LOCATION ${PYTHON_LIB})
 add_dependencies(python python_external)
 
 # Build library
 add_library(${LIB} ${SOURCES})
 target_link_libraries(${LIB} python)
 
+# Build sample executable
+add_executable(demo ${CMAKE_CURRENT_SOURCE_DIR}/bin/demo.c)
+targeT_link_libraries(demo ${LIB} python)
+
 # Generate cgo wrapper
 get_property(LIBRARY_PATH TARGET ${LIB} PROPERTY LOCATION)
 set(INCLUDE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/include)
+set(LIBRARIES "${LIBRARY_PATH} ${PYTHON_LIB}")
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/demo/src/bridge/bridge.go.in ${CMAKE_CURRENT_SOURCE_DIR}/demo/src/bridge/bridge.go)
