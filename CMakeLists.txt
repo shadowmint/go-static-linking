@@ -63,3 +63,7 @@ get_property(LIBRARY_PATH TARGET ${LIB} PROPERTY LOCATION)
 set(INCLUDE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/include)
 set(LIBRARIES "${LIBRARY_PATH} ${PYTHON_LIB}")
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/demo/src/bridge/bridge.go.in ${CMAKE_CURRENT_SOURCE_DIR}/demo/src/bridge/bridge.go)
+
+# Copy python instance to various places
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/assets/sample.py DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/assets/sample.py DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/demo)

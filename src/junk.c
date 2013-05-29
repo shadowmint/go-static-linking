@@ -7,7 +7,8 @@ int x(int y) {
 
   Py_SetProgramName("");
   Py_Initialize();
-  PyRun_SimpleString("print(\"Hello Python\")");
+  PySys_SetPath(".");
+  PyRun_SimpleString("from sample import s\ns()");
   Py_Finalize();
 
   return y;
