@@ -34,6 +34,11 @@ file(GLOB_RECURSE SOURCES src/*.c*)
 # libary headers
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/python/include/python2.7)
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/_obj)
+
+# generate go wrappers
+execute_process(COMMAND go tool cgo ${CMAKE_CURRENT_SOURCE_DIR}/demo/src/bridge/callback.go
+                WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 
 # Python dep
 set(PYTHON_INSTALL ${CMAKE_CURRENT_BINARY_DIR}/python)
