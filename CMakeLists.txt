@@ -59,10 +59,6 @@ add_dependencies(python python_external)
 add_library(${LIB} ${SOURCES})
 target_link_libraries(${LIB} python)
 
-# Build sample executable
-add_executable(demo ${CMAKE_CURRENT_SOURCE_DIR}/bin/demo.c)
-targeT_link_libraries(demo ${LIB} python)
-
 # Generate cgo wrapper
 get_property(LIBRARY_PATH TARGET ${LIB} PROPERTY LOCATION)
 set(INCLUDE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/include)
