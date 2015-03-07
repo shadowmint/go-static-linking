@@ -17,16 +17,14 @@ project (GB)
 set(LIB "gb")
 
 # Debug mode?
-set(CMAKE_BUILD_TYPE Release)
+set(CMAKE_BUILD_TYPE Debug)
 
 # Flags
-set(CMAKE_C_FLAGS "-Wall -pedantic -Wimplicit-function-declaration -Wreturn-type -Wstrict-prototypes -Wextra -fPIC")
 if(NOT WIN32)
+  set(CMAKE_C_FLAGS "-Wall -pedantic -Wimplicit-function-declaration -Wreturn-type -Wstrict-prototypes -Wextra -fPIC")
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror")
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
 endif()
-
-# Code type
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
 
 # Collect source files
 file(GLOB_RECURSE SOURCES src/*.c*)
@@ -39,6 +37,7 @@ add_library(${LIB} ${SOURCES})
 target_link_libraries(${LIB})
 
 # Generate cgo wrapper
-get_property(LIBRARY_PATH TARGET ${LIB} PROPERTY LOCATION)
-set(INCLUDE_PATH ${PROJECT_SOURCE_DIR}/include)
-configure_file(${PROJECT_SOURCE_DIR}/demo/src/bridge/bridge.go.in ${PROJECT_SOURCE_DIR}/demo/src/bridge/bridge.go)
+add_custom_command(TARGET gb
+                   POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -P ${PROJECT_SOURCE_DIR}/BindConfig.txt ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/include $<TARGET_FILE:gb>
+)
