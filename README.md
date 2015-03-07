@@ -50,7 +50,6 @@ Once again, no, visual studio is not supported. If you run:
 
 The default is to generate a visual studio projet. Don't use this,
 the static .lib file generated is not compatible.
-using the 32-bit version of go.
 
 Finally, yes, it does actually work. :)
 
